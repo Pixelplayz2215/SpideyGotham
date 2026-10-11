@@ -10,6 +10,8 @@ A Marvel's Spider-Man Remastered × LEGO Batman: Legacy of the Dark Knight mashu
 **Easiest install:** one click on Melty: https://melty.gg/m/spideygotham  
 **Manual install:** download `SpideyGotham-1.0.zip` from the [Releases](../../releases) page and follow *Install* below.
 
+**More from me:** [YouTube @Pixelplayz2215](https://www.youtube.com/@Pixelplayz2215)
+
 ![Splash](screenshots/splash_screen.png)
 
 | Web swing | Web launch | Web shot |
