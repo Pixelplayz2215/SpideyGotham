@@ -40,6 +40,7 @@ Everything else (moving, jumping, attacking, camera) uses the game's normal cont
 - **LEGO Batman: Legacy of the Dark Knight** on PC (Steam), Windows 10/11.
 - Optional: **Marvel's Spider-Man Remastered** installed on the same PC, for the Spider-Man sounds and music. Without it, everything works, just with no Spider-Man audio.
 - Single-player / offline only.
+- **Batman must be unlocked and playable.** Spider-Man only works when you are playing as Batman. It does not work as young Bruce Wayne or as Bruce Wayne in the early training sections; play on until Batman is unlocked, then press F6 / L3 + R3.
 
 ## Install (manual)
 
