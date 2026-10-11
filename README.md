@@ -4,6 +4,9 @@ Spider-Man swings through LEGO Gotham. One button turns LEGO Batman into LEGO Sp
 
 A Marvel's Spider-Man Remastered × LEGO Batman: Legacy of the Dark Knight mashup for PC.
 
+> [!IMPORTANT]
+> **Batman must be unlocked first.** Spider-Man only works once Batman is unlocked and playable. It will not work as young Bruce Wayne or as Bruce Wayne in the early training sections.
+
 **Easiest install:** one click on Melty: https://melty.gg/m/spideygotham  
 **Manual install:** download `SpideyGotham-1.0.zip` from the [Releases](../../releases) page and follow *Install* below.
 
@@ -11,7 +14,7 @@ A Marvel's Spider-Man Remastered × LEGO Batman: Legacy of the Dark Knight mashu
 
 | Web swing | Web launch | Web shot |
 |---|---|---|
-| ![](screenshots/web_swing_3.png) | ![](screenshots/web_launch_3.png) | ![](screenshots/web_shot_4.png) |
+| <img src="screenshots/web_swing_3.png" width="300"> | <img src="screenshots/web_launch_3.png" width="300"> | <img src="screenshots/web_shot_4.png" width="300"> |
 
 ## Features
 
