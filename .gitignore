@@ -1,0 +1,11 @@
+# Only the mod's own source, art and docs go on GitHub.
+# Dev/probe scripts, Melty helpers, reference downloads and build output stay local.
+/dev/
+/release/
+/texture_edit/
+/TODO.md
+bin/
+obj/
+*.log
+.vs/
+__pycache__/

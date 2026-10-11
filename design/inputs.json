@@ -1,0 +1,11 @@
+{
+  "sheet": "inputs",
+  "about": "Keyboard and mouse bindings, plus controller combos where added (toggle: L3 + R3, both sticks pressed together; the game uses L3 and R3 alone, so each fires briefly too), read with PlayerController:IsInputKeyDown (keyboard, mouse and gamepad). Each entry in a combos list is one alternative; every key in a combo must be held. Controller: R2 is unused on foot (only turrets map it); L2 is the same game action as RMB (IA_LT_Tap_Char, aim) and R1 the same as R (IA_RB, gadget), both already blocked or flattened while Spidey is on. Keyboard/mouse keys are ones LEGO Batman's own mapping contexts leave unused (dumped from the 43 InputMappingContexts in the running game): RightMouseButton (aim) and MiddleMouseButton (gadget) are taken. Q and R (the player's choice) are LEGO Batman gadget keys, so Batman's gadget abilities are blocked while Spidey is on (see ability_blocks).",
+  "columns": ["id", "keyboard_combos", "gamepad_combos", "mode", "label", "used_by", "verified"],
+  "rows": [
+    {"id": "toggle", "keyboard_combos": [["F6"]], "gamepad_combos": [["Gamepad_LeftThumbstick", "Gamepad_RightThumbstick"]], "mode": "press", "label": "F6 (controller: L3 + R3)", "used_by": "toggle_powers", "verified": "F6 toggles powers in game (test 19:13); L3+R3 tested by the player on a PS5 controller 2026-10-10"},
+    {"id": "swing", "keyboard_combos": [["Q"], ["ThumbMouseButton"]], "gamepad_combos": [["Gamepad_RightTrigger"]], "mode": "hold", "label": "hold Q (or Mouse 4; controller: hold R2)", "used_by": "web_swing", "verified": "held Q in game: anchored to the bridge tower and swung with the hang pose (23:27); R2 tested by the player 2026-10-10"},
+    {"id": "launch", "keyboard_combos": [["R"], ["ThumbMouseButton2"]], "gamepad_combos": [["Gamepad_RightShoulder"]], "mode": "press", "label": "R (or Mouse 5; controller: R1)", "used_by": "web_launch", "verified": "R and R1 tested by the player 2026-10-10"},
+    {"id": "shoot", "keyboard_combos": [["RightMouseButton"]], "gamepad_combos": [["Gamepad_LeftTrigger"]], "mode": "press", "label": "RMB (controller: L2)", "used_by": "web_shot", "verified": "RMB and L2 tested by the player 2026-10-10"}
+  ]
+}

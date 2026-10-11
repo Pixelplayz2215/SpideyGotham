@@ -1,0 +1,13 @@
+{
+  "sheet": "systems",
+  "about": "Runtime pieces and how they talk. The Lua mod runs inside LEGO Batman; SpideyLink.exe runs beside it, reads Spider-Man Remastered's files and plays its audio.",
+  "columns": ["id", "runs_in", "reads", "writes", "starts_when", "stops_when", "verified"],
+  "rows": [
+    {"id": "launcher", "runs_in": "SpideyLink.exe (Melty launch target)", "reads": "{localappdata}/SpideyGotham/melty.env (SPIDEYGOTHAM_SM_DIR, written by Melty)", "writes": "{localappdata}/SpideyGotham/link.json", "starts_when": "player presses Play", "stops_when": "LEGO Batman exits", "verified": "--launch read melty.env, started LEGO Batman via Steam, waited for its exe, exited with it (19:08-19:20)"},
+    {"id": "audio_cache", "runs_in": "SpideyLink.exe", "reads": "Spider-Man asset_archive (toc, soundbanks, streams) + vgmstream", "writes": "{localappdata}/SpideyGotham/cache/*.wav", "starts_when": "first launch or Spider-Man update", "stops_when": "cache complete", "verified": "built from the player install in 10 s: 68 clips + music, all non-silent (19:14)"},
+    {"id": "audio_player", "runs_in": "SpideyLink.exe", "reads": "{localappdata}/SpideyGotham/events.txt", "writes": "speakers (waveOut 48 kHz stereo)", "starts_when": "game running", "stops_when": "game exits", "verified": "cues played in game, heard by the player (19:30)"},
+    {"id": "spidey_mod", "runs_in": "LEGO Batman via UE4SS (ue4ss/Mods/SpideyGotham)", "reads": "inputs, player movement", "writes": "{localappdata}/SpideyGotham/events.txt (one cue id per line)", "starts_when": "game start", "stops_when": "game exit", "verified": "loads in game, F6/swing/launch cues reach SpideyLink (19:25)"},
+    {"id": "hud_portrait", "runs_in": "spidey_mod", "reads": "the suited minifig (SceneCapture2D, 256 px, only the player's components)", "writes": "{localappdata}/SpideyGotham/portrait.tga; W_PlayerPortrait_C IMG_Character material param Icon", "starts_when": "1 s after Spidey powers on, re-applied every second", "stops_when": "F6 back to Batman (Batman's icon restored by asset path)", "verified": "Spidey portrait shown on F6, Batman icon back on F6, Spidey again on F6 with no crash (23:30)"},
+    {"id": "fallback_start", "runs_in": "spidey_mod", "reads": "{localappdata}/SpideyGotham/link.json heartbeat", "writes": "starts SpideyLink.exe --attach when the game was started outside Melty", "starts_when": "no heartbeat 10 s after load", "stops_when": "n/a", "verified": "game started SpideyLink --attach when no heartbeat (19:14, 19:22)"}
+  ]
+}

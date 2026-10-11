@@ -1,0 +1,16 @@
+﻿{
+  "sheet": "game_hooks",
+  "about": "Every place the mod touches LEGO Batman: Legacy of the Dark Knight (UE 5.6, exe 1348853) through UE4SS. verified = seen working in the running game.",
+  "columns": ["id", "ue_path", "access", "purpose", "used_by", "verified"],
+  "rows": [
+    {"id": "player_controller", "ue_path": "FindFirstOf PlayerController (in level: whichever has a valid Pawn)", "access": "read", "purpose": "find the local player, read input", "used_by": "all", "verified": "in level: BP_DinnerPlayerController_C with BP_Batman_TheBatman2025_Playable_C pawn (19:21)"},
+    {"id": "player_pawn", "ue_path": "PlayerController.Pawn", "access": "read", "purpose": "the character that swings", "used_by": "web_swing,web_launch", "verified": "pawn class chain ...BP_Playable_C < DinnerPlayableCharacter < ... < Character (19:20)"},
+    {"id": "movement", "ue_path": "Pawn.CharacterMovement (UCharacterMovementComponent)", "access": "read/write Velocity, MovementMode, GravityScale; call SetMovementMode", "purpose": "swing physics", "used_by": "web_swing,web_launch", "verified": "DinnerCharacterMovementComponent: Velocity write + GravityScale 3.0 base, swing test 19:25"},
+    {"id": "input_keys", "ue_path": "PlayerController:IsInputKeyDown(FKey)", "access": "call", "purpose": "hold/press detection for keyboard, mouse, gamepad", "used_by": "inputs", "verified": "IsInputKeyDown saw W/F6/G/Q held (19:13-19:25)"},
+    {"id": "camera", "ue_path": "PlayerController.PlayerCameraManager:GetCameraLocation/GetCameraRotation", "access": "call", "purpose": "aim direction for anchor search and web shots", "used_by": "web_swing,web_launch", "verified": "GetCameraLocation/Rotation read (19:20), used for anchor search"},
+    {"id": "line_trace", "ue_path": "/Script/Engine.Default__KismetSystemLibrary:LineTraceSingle", "access": "call", "purpose": "find web anchor points on buildings", "used_by": "web_swing,web_launch", "verified": "LineTraceSingle hits ImpactPoint (19:20), building anchor 1922 cm (19:25)"},
+    {"id": "launch", "ue_path": "Pawn:LaunchCharacter", "access": "call", "purpose": "fling on release, web launch", "used_by": "web_swing,web_launch", "verified": "LaunchCharacter hop (19:21) and ground web-jump (19:25)"},
+    {"id": "web_line_visual", "ue_path": "spawn StaticMeshActor with /Engine/BasicShapes/Cylinder, scaled between hand and anchor", "access": "spawn/write", "purpose": "visible web line", "used_by": "web_swing,web_launch", "verified": "cylinder web line visible in screenshots t2 and B1"},
+    {"id": "frame_tick", "ue_path": "UE4SS LoopInGameThreadAfterFrames(1)", "access": "callback", "purpose": "per-frame update on the game thread", "used_by": "all", "verified": "LoopInGameThreadAfterFrames drives the mod every frame (all tests)"}
+  ]
+}

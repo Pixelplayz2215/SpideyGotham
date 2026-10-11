@@ -1,0 +1,11 @@
+{
+  "sheet": "ability_blocks",
+  "about": "Batman abilities that are switched off while Spidey is on: any active instance whose class name starts with a listed prefix is cancelled (UGameplayAbility K2_CancelAbility) the frame it starts. Ability names come from the player pawn's AbilitySystemComponent (204 abilities, read live). Remapping the game's input contexts does not work here: LEGO Batman uses player-mappable key profiles that override them (tested 19:52, RMB still aimed). Story-scripted glides (GA_FollowGlideSpline) are left alone so missions cannot soft-lock.",
+  "columns": ["id", "class_prefixes", "effect", "covers", "verified"],
+  "rows": [
+    {"id": "gadget_aim_fire", "class_prefixes": ["GA_AimWeapon_", "GA_Aim_Weapon_", "GA_FireWeapon_", "GA_Fire_Weapon_", "GA_GetGadgetOut_", "GA_SwitchBatarangProjectile"], "effect": "n/a", "covers": "aiming (RMB) and throwing/firing batarangs, BatClaw and other weapons; Q and R no longer fire Batman's gadgets", "verified": "K2_CancelAbility on GA_Aim_Weapon_BatClaw ended the aim while RMB was held (19:55, screenshot aim3)"},
+    {"id": "quick_gadgets", "class_prefixes": ["GA_QuickGadgetUse", "GA_BatclawSlam"], "effect": "n/a", "covers": "quick-gadget buttons and BatClaw slam (gel/spray/goggles item abilities are always-on listeners and are left alone)", "verified": "in the 20 abilities blocked on F6 (log); no quick gadget seen in the player\u0027s sessions, not tested on its own"},
+    {"id": "grapple", "class_prefixes": ["GA_Grappling", "GA_GrappleSmallBoost", "GA_GrappleBigBoost"], "effect": "/Script/Grappling.BlockGrapplingGameplayEffect", "covers": "Batman's grapnel gun and its E prompt: the game's own BlockGrapplingGameplayEffect is applied while Spidey is on (cancelling a started grapple left the figure hovering)", "verified": "log \"applied grapple block\" on every F6; the player tested R and R1 web launch with no grapnel firing (2026-10-10)"},
+    {"id": "glide", "class_prefixes": ["GA_Gliding", "GA_Hover", "GA_GlideDive", "GA_GlideDodge", "GA_GlideSplat", "GA_GlideSprint", "GA_GlideHover"], "effect": "n/a", "covers": "cape gliding and its moves (GA_GlideLift is an always-on updraft listener and is left alone)", "verified": "in the 20 abilities blocked on F6 (log); no glide seen in the player\u0027s sessions, not tested on its own"}
+  ]
+}
