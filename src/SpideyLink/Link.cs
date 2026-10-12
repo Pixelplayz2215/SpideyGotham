@@ -41,11 +41,67 @@ public static class Link
 
     static bool Valid(string dir) => File.Exists(Path.Combine(dir, "asset_archive", "toc"));
 
+    static bool GameRunning()
+    {
+        try { return Process.GetProcessesByName(GameProcess).Length > 0; } catch { return false; }
+    }
+
+    // Melty watches this process, not the game: when started by Play it must stay up exactly as long as the game,
+    // whatever goes wrong with the audio. Any failure below only switches the Spider-Man sounds off.
     public static int Run(bool launchGame)
     {
-        Directory.CreateDirectory(Home);
+        try { Directory.CreateDirectory(Home); } catch { }
+        try { return RunLink(launchGame); }
+        catch (Exception ex)
+        {
+            Log("SpideyLink error: " + ex);
+            WriteStatus("no-audio");
+            return launchGame ? WaitForGameToEnd() : 0;
+        }
+    }
+
+    // Started by Play: start the game if needed, then hold until it has been closed for a few seconds
+    // (Steam can briefly restart it).
+    static int WaitForGameToEnd()
+    {
+        if (!GameRunning() && !WaitForGameStart()) return 1;
+        int goneFor = 0;
+        while (goneFor < 10)
+        {
+            Thread.Sleep(1000);
+            goneFor = GameRunning() ? 0 : goneFor + 1;
+        }
+        Log("game exited");
+        return 0;
+    }
+
+    static bool WaitForGameStart()
+    {
+        var deadline = DateTime.UtcNow.AddMinutes(5);
+        while (DateTime.UtcNow < deadline) { if (GameRunning()) return true; Thread.Sleep(500); }
+        Log("LEGO Batman did not start");
+        return false;
+    }
+
+    static void StartGame()
+    {
+        if (GameRunning()) return;
+        Log("starting LEGO Batman via Steam");
+        try { Process.Start(new ProcessStartInfo($"steam://rungameid/{SteamAppId}") { UseShellExecute = true }); }
+        catch (Exception ex) { Log("could not start the game through Steam: " + ex.Message); }
+    }
+
+    static int RunLink(bool launchGame)
+    {
         using var single = new Mutex(true, "SpideyGotham.SpideyLink", out bool first);
-        if (!first) { Log("already running"); return 0; }
+        if (!first)
+        {
+            // another SpideyLink already plays the sounds; a Play start still has to start the game and wait for it
+            Log("already running");
+            if (!launchGame) return 0;
+            StartGame();
+            return WaitForGameToEnd();
+        }
         Log($"SpideyLink {typeof(Link).Assembly.GetName().Version} start (launch={launchGame})");
 
         var events = Path.Combine(Home, "events.txt");
@@ -54,11 +110,7 @@ public static class Link
         if (sm == null) { Log("Marvel's Spider-Man Remastered folder not found; audio disabled"); WriteStatus("no-spiderman"); }
         else File.WriteAllText(Path.Combine(Home, "spiderman_dir.txt"), sm);
 
-        if (launchGame && Process.GetProcessesByName(GameProcess).Length == 0)
-        {
-            Log("starting LEGO Batman via Steam");
-            Process.Start(new ProcessStartInfo($"steam://rungameid/{SteamAppId}") { UseShellExecute = true });
-        }
+        if (launchGame) StartGame();
 
         AudioCache? cache = null;
         if (sm != null)
@@ -73,24 +125,27 @@ public static class Link
             catch (Exception ex) { Log("audio cache failed: " + ex); cache = null; }
         }
 
-        // wait for the game (up to 3 minutes), then run until it exits
-        Process? game = null;
-        var deadline = DateTime.UtcNow.AddMinutes(3);
-        while (game == null && DateTime.UtcNow < deadline)
-        {
-            game = Process.GetProcessesByName(GameProcess).FirstOrDefault();
-            if (game == null) Thread.Sleep(500);
-        }
-        if (game == null) { Log("LEGO Batman did not start"); return 1; }
-        Log($"game pid {game.Id}");
+        // wait for the game, then run until it has been closed for a few seconds
+        if (!GameRunning() && !WaitForGameStart()) return 1;
+        Log("game running");
 
-        using var player = cache != null ? new CuePlayer(cache, Log) : null;
+        CuePlayer? player = null;
+        try { if (cache != null) player = new CuePlayer(cache, Log); }
+        catch (Exception ex) { Log("audio output failed, sounds off: " + ex.Message); }
+        using var _ = player;
         GC.Collect(2, GCCollectionMode.Aggressive, true, true); // drop archive/bank buffers from the cache build
         WriteStatus(player != null ? "ready" : "no-audio");
         long readPos = 0;
         var lastBeat = DateTime.MinValue;
-        while (!game.HasExited)
+        var lastSeen = DateTime.UtcNow;
+        var lastCheck = DateTime.UtcNow;
+        while ((DateTime.UtcNow - lastSeen).TotalSeconds < 10)
         {
+            if ((DateTime.UtcNow - lastCheck).TotalSeconds >= 1)
+            {
+                lastCheck = DateTime.UtcNow;
+                if (GameRunning()) lastSeen = lastCheck;
+            }
             try
             {
                 using var fs = new FileStream(events, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
