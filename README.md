@@ -8,7 +8,7 @@ A Marvel's Spider-Man Remastered × LEGO Batman: Legacy of the Dark Knight mashu
 > **Batman must be unlocked first.** Spider-Man only works once Batman is unlocked and playable. It will not work as young Bruce Wayne or as Bruce Wayne in the early training sections.
 
 **Easiest install:** one click on Melty: https://melty.gg/m/spideygotham  
-**Manual install:** download `SpideyGotham-1.0.zip` from the [Releases](../../releases) page and follow *Install* below.
+**Manual install:** download `SpideyGotham-1.0.1.zip` from the [Releases](../../releases) page and follow *Install* below.
 
 **More from me:** [YouTube @Pixelplayz2215](https://www.youtube.com/@Pixelplayz2215)
 
@@ -51,7 +51,7 @@ Everything else (moving, jumping, attacking, camera) uses the game's normal cont
 
 1. Open the game's folder: in Steam, right-click LEGO Batman: Legacy of the Dark Knight → Manage → Browse local files.
 2. Go to `LEGOBatmanLotDK\Binaries\Win64`.
-3. Copy everything **inside** this package's `Win64` folder into that folder (`dwmapi.dll` and the `ue4ss` folder). Allow it to replace files if asked.
+3. Copy everything **inside** this package's `Win64` folder into that folder (`dwmapi.dll`, the three Microsoft runtime files `msvcp140.dll`, `vcruntime140.dll`, `vcruntime140_1.dll`, and the `ue4ss` folder). Allow it to replace files if asked.
 4. Start the game. The main menu should now show LEGO Spider-Man. In game, press **F6** (or **L3 + R3**) while playing as Batman.
 
 **Already using UE4SS?** Copy only `Win64\ue4ss\Mods\SpideyGotham` into your `ue4ss\Mods` folder and add the line `SpideyGotham : 1` to `ue4ss\Mods\mods.txt`.
@@ -69,7 +69,7 @@ No Spider-Man game files are included in this mod; sounds are read from your own
 
 ## Uninstall
 
-1. In `LEGOBatmanLotDK\Binaries\Win64`, delete `dwmapi.dll` and the `ue4ss` folder (or, if you use other UE4SS mods, just `ue4ss\Mods\SpideyGotham` and its line in `mods.txt`).
+1. In `LEGOBatmanLotDK\Binaries\Win64`, delete `dwmapi.dll`, `msvcp140.dll`, `vcruntime140.dll`, `vcruntime140_1.dll` and the `ue4ss` folder (or, if you use other UE4SS mods, just `ue4ss\Mods\SpideyGotham` and its line in `mods.txt`).
 2. Startup splash: in `LEGOBatmanLotDK\Content\Splash`, delete `Splash.bmp` and rename `Splash_Batman_original.bmp` back to `Splash.bmp`. (Steam → Verify integrity of game files also restores it.)
 3. Optional: delete `%LOCALAPPDATA%\SpideyGotham` (the mod's cache and settings).
 
@@ -96,12 +96,13 @@ Build SpideyLink with `dotnet publish src/SpideyLink -c Release -r win-x64 --sel
 
 ## License
 
-The mod's own code and art are released under [CC BY 4.0](LICENSE). UE4SS and vgmstream keep their own licenses. No game files are included in this repository or its releases.
+The mod's own code and art are released under [CC BY 4.0](LICENSE). UE4SS, vgmstream and the Microsoft runtime files keep their own licenses. No game files are included in this repository or its releases.
 
 ## Credits
 
 - Mod, Spider-Man suit prints, webs, menu logo and splash art: original work for this mod, made with AI assistance (Claude by Anthropic) and tested in game.
 - [UE4SS](https://github.com/UE4SS-RE/RE-UE4SS) (MIT license, included with its LICENSE) loads the mod.
 - [vgmstream](https://github.com/vgmstream/vgmstream) (license in `bin\vgmstream\COPYING`) decodes the Spider-Man audio from your own install.
+- Microsoft Visual C++ runtime files (`msvcp140.dll`, `vcruntime140.dll`, `vcruntime140_1.dll`), included as redistributable files so the mod loader starts on PCs without the runtime installed.
 
 Fan-made and not affiliated with or endorsed by Marvel, Sony Interactive Entertainment, Insomniac Games, Warner Bros. Games, TT Games, DC or the LEGO Group. All trademarks belong to their owners.
